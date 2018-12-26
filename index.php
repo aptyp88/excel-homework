@@ -7,7 +7,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 //классы для чтения
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx as Reader;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 $products = [
@@ -34,7 +34,7 @@ for($i = 0; $i < count($products); $i++)
 $writer = new Xlsx($spreadsheet);
 $writer -> save('test.xlsx');
 
-$reader = new Xlsx();
+$reader = new Reader();
 
 $sp = $reader -> load('test.xlsx');
 $cells = $sp -> getActiveSheet() -> getCellCollection();
