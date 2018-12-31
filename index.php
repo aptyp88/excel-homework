@@ -6,14 +6,10 @@ require_once 'vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-//классы для чтения
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx as Reader;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-
 $products = [
 	['product1', 100, 'category1'],
 	['product2', 50, 'category2'],
-	['product3', 20, 'category1'],
+	['product3', 30, 'category1'],
 ];
 
 $spreadsheet = new Spreadsheet();
@@ -34,9 +30,28 @@ for($i = 0; $i < count($products); $i++)
 $writer = new Xlsx($spreadsheet);
 $writer -> save('test.xlsx');
 
-$reader = new Reader();
+// echo '<a href="load.php">Load excel file</a>';
 
-$sp = $reader -> load('test.xlsx');
-$cells = $sp -> getActiveSheet() -> getCellCollection();
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx as Reader;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
-echo $cells;
+$reader = new Reader(); 
+$spreadsheet = $reader->load('test.xlsx');
+
+$cells = $spreadsheet->getActiveSheet()->getCellCollection();
+echo '<table border="1">';
+for ($row = 1; $row <= $cells->getHighestRow(); $row++)
+{
+    echo '<tr>';
+    for ($col = 'A'; $col <= 'D'; $col++)
+    {
+        $cell = $cells->get($col.$row);
+        if($cell)
+        {
+            echo '<td>' . $cell->getValue() . '</td>';
+        }
+    }
+    echo  '</tr>';
+}
+
+echo '</table>';
